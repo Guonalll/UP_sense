@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>规划 PDF 知识库</title>
+  <style>
+    :root { --bg:#eef3ef; --panel:rgba(255,255,255,.92); --panel-strong:#fff; --line:#d2ddd6; --text:#20302a; --muted:#60746c; --accent:#2f6b57; --accent-soft:#d8e8df; --shadow:0 18px 45px rgba(28,48,39,.08); }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Noto Serif SC","Source Han Serif SC",Georgia,serif; color:var(--text); background:radial-gradient(circle at top right, rgba(87,138,113,.18), transparent 28%), linear-gradient(180deg, #f6faf7 0%, var(--bg) 100%); }
+    .page { max-width:1280px; margin:0 auto; padding:32px 20px 60px; }
+    .hero { background:linear-gradient(135deg, rgba(255,255,255,.94), rgba(236,245,239,.92)); border:1px solid rgba(255,255,255,.7); border-radius:24px; box-shadow:var(--shadow); padding:28px; margin-bottom:24px; }
+    .hero h1 { margin:0 0 10px; font-size:34px; letter-spacing:.02em; }
+    .hero p { margin:0; color:var(--muted); max-width:840px; line-height:1.7; }
+    .stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin:22px 0 0; }
+    .stat-card,.filter-panel,.results-panel,.detail-panel { background:var(--panel); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); }
+    .stat-card { padding:18px; }
+    .stat-label { display:block; font-size:13px; color:var(--muted); margin-bottom:8px; }
+    .stat-value { font-size:28px; font-weight:700; }
+    .workspace { display:grid; grid-template-columns:320px 1fr; gap:18px; align-items:start; }
+    .filter-panel,.results-panel,.detail-panel { padding:18px; }
+    .filter-panel { position:sticky; top:18px; }
+    .panel-title { margin:0 0 14px; font-size:18px; }
+    label { display:block; margin:14px 0 6px; font-size:13px; color:var(--muted); }
+    input,select { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:var(--panel-strong); color:var(--text); }
+    .result-list { display:grid; gap:12px; }
+    .doc-card { border:1px solid var(--line); border-radius:16px; background:rgba(255,255,255,.85); padding:16px; cursor:pointer; transition:transform .18s ease, border-color .18s ease; }
+    .doc-card:hover,.doc-card.active { transform:translateY(-2px); border-color:var(--accent); }
+    .doc-card h3 { margin:0 0 8px; font-size:19px; }
+    .meta-line,.detail-meta { color:var(--muted); font-size:13px; line-height:1.6; }
+    .tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .tag { padding:4px 10px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font-size:12px; }
+    .detail-panel { margin-top:18px; }
+    .detail-section + .detail-section { margin-top:16px; padding-top:16px; border-top:1px dashed var(--line); }
+    .chunk { padding:12px 14px; border-radius:14px; background:#f9fcfa; border:1px solid #e4ece7; margin-top:10px; line-height:1.7; }
+    .empty { color:var(--muted); padding:18px 0; }
+    @media (max-width: 960px) { .workspace { grid-template-columns:1fr; } .filter-panel { position:static; } }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>规划 PDF 知识库</h1>
+      <p>面向国土空间规划、生态保护规划、专项规划、实施方案、技术指南与政策文件的静态知识库。当前版本基于 GitHub 仓库中的结构化 JSON 索引提供检索、筛选和文档详情浏览。</p>
+      <div class="stats" id="stats"></div>
+    </section>
+    <section class="workspace">
+      <aside class="filter-panel">
+        <h2 class="panel-title">检索与筛选</h2>
+        <label for="searchInput">标题 / 正文关键词</label>
+        <input id="searchInput" type="text" placeholder="例如：生态保护红线、深圳、总体规划">
+        <label for="regionFilter">地区</label>
+        <select id="regionFilter"></select>
+        <label for="yearFilter">年份</label>
+        <select id="yearFilter"></select>
+        <label for="typeFilter">规划类型</label>
+        <select id="typeFilter"></select>
+        <label for="levelFilter">规划层级</label>
+        <select id="levelFilter"></select>
+        <label for="tagFilter">标签</label>
+        <select id="tagFilter"></select>
+      </aside>
+      <main>
+        <section class="results-panel">
+          <h2 class="panel-title">文档列表</h2>
+          <div id="resultCount" class="detail-meta"></div>
+          <div id="resultList" class="result-list"></div>
+        </section>
+        <section class="detail-panel">
+          <h2 class="panel-title">文档详情</h2>
+          <div id="detailView" class="empty">选择左侧文档查看 metadata、摘要与章节片段。</div>
+        </section>
+      </main>
+    </section>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>

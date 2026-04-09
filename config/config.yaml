@@ -1,0 +1,68 @@
+project:
+  name: planning-pdf-knowledge-base
+  timezone: Asia/Shanghai
+  language: zh-CN
+
+paths:
+  raw_pdf_dir: raw_pdfs/incoming
+  parsed_document_dir: parsed/documents
+  parsed_chunk_dir: parsed/chunks
+  data_dir: data
+
+processing:
+  copy_raw_pdf: true
+  chunk_size: 1200
+  chunk_overlap: 120
+  max_summary_chars: 220
+  min_keyword_length: 2
+
+patterns:
+  year_regex: '(19|20)\d{2}'
+  year_range_regex: '(19|20)\d{2}\s*[-—–至]\s*(19|20)\d{2}'
+  chapter_regexes:
+    - '^第[一二三四五六七八九十百零]+章'
+    - '^[一二三四五六七八九十]+、'
+    - '^（[一二三四五六七八九十]+）'
+    - '^\([一二三四五六七八九十]+\)'
+    - '^\d+\.\d+'
+  plan_type_keywords:
+    国土空间规划: ["国土空间", "空间规划"]
+    生态保护规划: ["生态保护", "生态修复"]
+    城市总体规划: ["总体规划", "总规"]
+    专项规划: ["专项规划", "专项"]
+    实施方案: ["实施方案", "行动方案"]
+    技术指南: ["技术指南", "指南"]
+    评估报告: ["评估报告", "评估"]
+    政策文件: ["办法", "政策", "通知", "意见"]
+    会议纪要: ["会议纪要", "纪要"]
+    标准规范: ["规范", "标准"]
+  plan_level_keywords:
+    总体规划: ["总体规划", "总规"]
+    专项规划: ["专项规划"]
+    详细规划: ["详细规划", "详规"]
+    实施方案: ["实施方案"]
+    指南规范: ["指南", "规范", "标准"]
+
+lexicons:
+  region_hints:
+    - 北京市
+    - 上海市
+    - 天津市
+    - 重庆市
+    - 广东省
+    - 深圳市
+    - 广州市
+    - 珠海市
+    - 杭州市
+    - 南京市
+  planning_terms:
+    - 生态保护红线
+    - 永久基本农田
+    - 城镇开发边界
+    - 国土空间
+    - 用途管制
+    - 空间分区
+    - 三区三线
+    - 生态修复
+    - 综合整治
+    - 资源环境承载力
